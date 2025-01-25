@@ -2,11 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\RegForm;
 use app\models\Users;
 use app\models\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\bootstrap5\ActiveForm;
+use yii\web\Response;
+use Yii;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -67,10 +71,15 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Users();
+        $model = new RegForm();
+
+        if (\Yii::$app->request->isAjax && $model->load(\Yii::$app->request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        } 
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load(\Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id_user' => $model->id_user]);
             }
         } else {

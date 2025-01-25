@@ -14,7 +14,7 @@ use Yii;
  * @property string $surname
  * @property string|null $patronymic
  * @property string $login
- * @property string $еmail
+ * @property string $email
  * @property string $password
  * @property int|null $is_admin
  *
@@ -36,9 +36,9 @@ class Users extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['name', 'surname', 'login', 'еmail', 'password'], 'required'],
+            [['name', 'surname', 'login', 'email', 'password'], 'required'],
             [['is_admin'], 'integer'],
-            [['name', 'surname', 'patronymic', 'login', 'еmail', 'password'], 'string', 'max' => 255],
+            [['name', 'surname', 'patronymic', 'login', 'email', 'password'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,7 +53,7 @@ class Users extends ActiveRecord implements IdentityInterface
             'surname' => 'Фамилия',
             'patronymic' => 'Отчество',
             'login' => 'Логин',
-            'еmail' => 'Еmail',
+            'email' => 'email',
             'password' => 'Пароль',
             'is_admin' => 'Is Admin',
         ];
@@ -72,9 +72,9 @@ class Users extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id_user)
     {
-        return static::findOne($id);
+        return static::findOne($id_user);
     }
 
     /**
@@ -90,7 +90,7 @@ class Users extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return $this->id;
+        return $this->id_user;
     }
 
     /**
@@ -123,11 +123,11 @@ class Users extends ActiveRecord implements IdentityInterface
     /**
      * Finds user by email
      *
-     * @param string $email
+     * @param string $login
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByLogin($login)
     {
-        return self::find()->where(['email'=> $email])->one();
+        return self::find()->where(['login'=> $login])->one();
     }
 }

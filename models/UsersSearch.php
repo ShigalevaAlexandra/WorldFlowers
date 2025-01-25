@@ -18,7 +18,7 @@ class UsersSearch extends Users
     {
         return [
             [['id_user', 'is_admin'], 'integer'],
-            [['name', 'surname', 'patronymic', 'login', 'еmail', 'password'], 'safe'],
+            [['name', 'surname', 'patronymic', 'login', 'email', 'password'], 'safe'],
         ];
     }
 
@@ -66,7 +66,7 @@ class UsersSearch extends Users
             ->andFilterWhere(['like', 'surname', $this->surname])
             ->andFilterWhere(['like', 'patronymic', $this->patronymic])
             ->andFilterWhere(['like', 'login', $this->login])
-            ->andFilterWhere(['like', 'еmail', $this->еmail])
+            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'password', $this->password]);
 
         return $dataProvider;
