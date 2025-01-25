@@ -7,6 +7,7 @@ use app\models\CartsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * CartsController implements the CRUD actions for Carts model.
@@ -130,5 +131,13 @@ class CartsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function beforeAction($action)
+    {
+        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+            $this->redirect(['site/login']);
+            return false;
+        } else return true;
     }
 }

@@ -7,6 +7,7 @@ use app\models\OrdersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * OrdersController implements the CRUD actions for Orders model.
@@ -130,5 +131,13 @@ class OrdersController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function beforeAction($action)
+    {
+        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+            $this->redirect(['site/login']);
+            return false;
+        } else return true;
     }
 }
