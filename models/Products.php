@@ -38,6 +38,7 @@ class Products extends ActiveRecord
         return [
             [['photo', 'name', 'price', 'country_origin', 'category_id', 'color', 'count'], 'required'],
             [['price', 'category_id', 'count'], 'integer'],
+            [['photo'], 'file', 'extensions' => ['png', 'jpg', 'gif'], 'skipOnEmpty' => false],
             [['photo', 'name', 'country_origin', 'color'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::class, 'targetAttribute' => ['category_id' => 'id_category']],
         ];
@@ -49,14 +50,14 @@ class Products extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_product' => 'Id Product',
-            'photo' => 'Photo',
-            'name' => 'Name',
-            'price' => 'Price',
-            'country_origin' => 'Country Origin',
-            'category_id' => 'Category ID',
-            'color' => 'Color',
-            'count' => 'Count',
+            'id_product' => 'ID',
+            'photo' => 'Изображение',
+            'name' => 'Наименование',
+            'price' => 'Цена',
+            'country_origin' => 'Страна поставщика',
+            'category_id' => 'Категоря (ID)',
+            'color' => 'Цвет',
+            'count' => 'Кол-во'
         ];
     }
 

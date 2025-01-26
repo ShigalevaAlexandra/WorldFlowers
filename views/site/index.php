@@ -2,52 +2,64 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+use app\models\Products;
+
+$this->title = 'Мир цветов';
 ?>
+
 <div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
+<div class="jumbotron text-center bg-transparent mt-5 mb-5">
+    <br><br><img src='https://up-shigaleva.xn--80ahdri7a.site/web/logo1.png' alt='image' style='min-width: 170px;'>
+    <h1 class="display-4"><b>Меньше слов - больше цветов!</b></h1><br><br>
+    <p class="lead">Забыли про день рождения подруги? Хотите сделать сюрприз любимой?</p>
+    <p class="lead">Или просто нужна яркая деталь для интерьера?</p>
+    <p class="lead">Тогда тебе точно к нам!</p><br><br><br>
+    <h1 class="display-4 bg-secondary text-white m-0 pb-2"><b>новинки компании</b></h1>
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <?php
+        $products = Products::find()->orderBy(['date_added'=>SORT_DESC])->limit(5)->all();
+        $totalProducts = count($products);
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        if($totalProducts > 0) {
+            echo "<div class='carousel-item active border border-2 border-secondary' style='height: 75vh; width: 100%; 
+            background-position: center; background-repeat: no-repeat; background-size: cover;
+            background-image: url(http://up-shigaleva.xn--80ahdri7a.site/web/{$products[$totalProducts - 1]->photo});'>
+                <div class='carousel-caption d-none d-md-block bg-white'>
+                    <h4 class='text-secondary'>{$products[$totalProducts - 1]->name}</h4>
+                </div>
 
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+            </div>";
+
+            for($i = $totalProducts - 2; $i >= max(0, $totalProducts - 5); $i--) {
+                echo "<div class='carousel-item border border-2 border-secondary' style='height: 75vh; width: 100%; 
+                background-position: center; background-repeat: no-repeat; background-size: cover;
+                background-image: url(http://up-shigaleva.xn--80ahdri7a.site/web/{$products[$i]->photo});'>
+                    <div class='carousel-caption d-none d-md-block bg-white'>
+                        <h4 class='text-secondary'>{$products[$i]->name}</h4>
+                    </div>
+                </div>";
+            }
+        }
+        ?>
     </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
+</div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предыдущий</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Следующий</span>
+  </button>
+</div><br><br>

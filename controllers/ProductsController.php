@@ -7,6 +7,8 @@ use app\models\ProductsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use Yii;
 
 /**
  * ProductsController implements the CRUD actions for Products model.
@@ -60,6 +62,17 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function upload()
+    {
+        if ($this->validate()) {
+            $path = 'productsImages/' . Yii::$app->getSecurity()->generateRandomString(10) . '.' . $this->photo->extension;
+            $this->photo->saveAs($path);
+            return $path;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Creates a new Products model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -70,16 +83,22 @@ class ProductsController extends Controller
         $model = new Products();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_product' => $model->id_product]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
+            $model->load($this->request->post());
+            $model->photo=UploadedFile::getInstance($model,'photo');
+            $file_name='productsImages/' . \Yii::$app->getSecurity()->generateRandomString(50). '.' . $model->photo->extension;
+            $model->photo->saveAs(\Yii::$app->basePath .'/web/'. $file_name);
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            if ($model->save(false)) {
+                Yii::$app->db->createCommand()->update('products', ['photo'=>$file_name], "id_product = {$model->id_product}")->execute();
+                return $this->redirect(["view","id_product"=> $model->id_product]);
+            }
+            } else {
+                $model->loadDefaultValues();
+            }
+            
+            return $this->render('create', [
+                'model' => $model,
+            ]);
     }
 
     /**
@@ -130,5 +149,16 @@ class ProductsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionCatalog()
+    {
+        $searchModel = new ProductsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('catalog', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

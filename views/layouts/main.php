@@ -33,10 +33,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     if (Yii::$app->user->isGuest) {
         $items=[
-            ['label' => 'Каталог', 'url' => ['/product/index']],
             ['label' => 'O нас', 'url' => ['/site/about']],
+            ['label' => 'Каталог', 'url' => ['/products/catalog']],
             ['label' => 'Где нас найти', 'url' => ['/site/contact']],
-            ['label' => 'Регистрация', 'url' => ['/user/create']],
+            ['label' => 'Регистрация', 'url' => ['/users/create']],
             ['label' => 'Вход', 'url' => ['/site/login']]
             ];
     }
@@ -47,8 +47,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ])
             :
             ($items=[
-                ['label' => 'Каталог', 'url' => ['/product/index']],
                 ['label' => 'O нас', 'url' => ['/site/about']],
+                ['label' => 'Каталог', 'url' => ['/products/catalog']],
                 ['label' => 'Где нас найти', 'url' => ['/site/contact']],
                 ['label' => 'Корзина', 'url' => ['/cart/index']],
                 ['label' => 'Заказы', 'url' => ['/order/index']],
@@ -65,9 +65,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     } 
 
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => Html::img('/web/logo.png').'   '.Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => ['class' => 'navbar-expand-md navbar-dark bg-secondary fixed-top']
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
@@ -90,7 +90,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <footer id="footer" class="mt-auto py-3 bg-light">
     <div class="container">
         <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; My Company <?= date('Y') ?></div>
+            <div class="col-md-6 text-center text-md-start">&copy; Мир цветов <?= date('Y') ?></div>
             <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
         </div>
     </div>
