@@ -61,7 +61,7 @@ class CartsSearch extends Carts
             'user_id' => $this->user_id,
             'product_id' => $this->product_id,
             'count' => $this->count,
-            'order_id' => $this->order_id,
+            'order_id' => $this -> order_id,
         ]);
 
         return $dataProvider;

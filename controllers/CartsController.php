@@ -81,7 +81,7 @@ class CartsController extends Controller
         $product->save(false);
 
         $model = Carts::find()->where(['user_id' => Yii::$app->user->identity->id])
-        ->andWhere(['product_id' => $product_id])->one();
+        ->andWhere(['product_id' => $product_id])->andWhere(['order_id' => 0])->one();
 
         if ($model) {
             $model->count += $items;
@@ -93,6 +93,7 @@ class CartsController extends Controller
         $model->user_id = Yii::$app->user->identity->id;
         $model->product_id = $product->id_product;
         $model->count = $items;
+        $model->order_id = 0;
 
         if ($model->save(false)) {
             return json_encode(['success' => true, 'message' => 'Товар добавлен в корзину']);
@@ -111,7 +112,7 @@ class CartsController extends Controller
         }    
 
         $model = Carts::find()->where(['user_id' => Yii::$app->user->identity->id])
-        ->andWhere(['product_id' => $product_id])->one();
+        ->andWhere(['product_id' => $product_id])->andWhere(['order_id' => 0])->one();
     
         if ($model) {
             if ($model->count > 1) {

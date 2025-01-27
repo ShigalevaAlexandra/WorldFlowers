@@ -14,10 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->dropDownList([ 'Новый' => 'Новый', 'Подтвержден' => 'Подтвержден', 'Отменен' => 'Отменен', ], ['prompt' => '']) ?>
 
-    <?= $form->field($model, ' reason_cancellation')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_time')->textInput() ?>
-
+    <?= $form->field($model, 'reason_cancellation')->textarea(['rows' => 6]) ?>
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

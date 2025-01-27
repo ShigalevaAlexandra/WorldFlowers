@@ -60,8 +60,8 @@ $this->title = 'Корзина';
                 let body = document.getElementById('modalBody');
 
                 if (result.includes('false')){
-                    title.innerText = 'Ошибка';
-                    body.innerHTML = "<p>Ошибка удаления товара</p>"
+                    title.innerText = 'Ошибка удаления товара';
+                    body.innerHTML = "<p>Попробуйте обновить страницу...</p>"
                 } else {
                     title.innerText = 'Корзина уменьшилась';
                     body.innerHTML = "<p>Товар успешно удален из корзины</p>"
@@ -72,47 +72,41 @@ $this->title = 'Корзина';
             })
         }
 
-        /*function order() {
+        function create_order() {
+            $password = document.getElementById('password').value;
+
+            let form=new FormData();
+            form.append('password', $password);
+
             let request_options = {
-                method: 'POST'
+                method: 'POST', 
+                body: form
             };
 
             fetch('https://up-shigaleva.xn--80ahdri7a.site/orders/create', request_options)
-                .then(response => response.text())
-                .then(result => {
-                    let title = document.getElementById('staticBackdropLabel');
-                    let body = document.getElementById('modalBody');
-                    if (result == false) {
-                        title.innerText = 'Ошибка';
-                        body.innerHTML = "<p>Ошибка удаления товара</p>"
-                    } else {
-                        title.innerText = 'Информационное сообщение';
-                        body.innerHTML = "<p>Товар успешно удален</p>"
-                    }
-                    let myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"), {});
-                    myModal.show();
-                })
-        }*/
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                let title = document.getElementById('staticBackdropLabel');
+                let body = document.getElementById('modalBody');
 
-        function onSubmit() {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
+                if (result.includes('false')){
+                    title.innerText = 'Ошибка формирования заказа';
+                    body.innerHTML = "<p>Пароль введен неверно</p>"
+                } else {
+                    title.innerText = 'Заказ оформлен';
+                    body.innerHTML = "<p>Товары из корзины перемещены в заказ</p>"
+                }
 
-                        form.classList.add('was-validated')
-                    }, false)
+                let myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"), {});
+                myModal.show();
                 })
         }
+
     </script>
 
     <?php
-        $carts = Carts::find()->where(['user_id' => Yii::$app->user->id, 'order_id' => null])->all();
+        $carts = Carts::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['order_id' => 0])->all();
         $products = [];
 
         foreach ($carts as $cart) {
@@ -122,6 +116,9 @@ $this->title = 'Корзина';
         }
 
         echo "<br><div class='d-flex flex-row flex-wrap justify-content-start align-itemsend'>";
+
+        $all_price = 0;
+
         foreach ($products as $product) {
             echo "<div class='card m-1' style='width: 22%; min-width: 390px;'>
                 <a href='/product/view?id_product={$product['id_product']}' style='height: 300px; width: 388px; background-position: center; background-size: cover; background-repeat: no-repeat; background-image: url(https://up-shigaleva.xn--80ahdri7a.site/web/{$product['photo']})'></a>
@@ -129,8 +126,9 @@ $this->title = 'Корзина';
                 <h5 class='card-title'>{$product['name']}</h5>";
 
                 $price = $product['price'] * $product['count'];
+                $all_price += $price;
 
-            echo "<p class='text-danger'><b>{$price} руб</b></p>";
+            echo "<p class='text-secondary'><b>{$price} руб</b></p>";
             echo "<div class='d-flex w-100 justify-content-between align-items-center'>
                 <button onclick='remove_product({$product['id_product']})' class='btn btn-secondary'>-</button>
                 <p class='card-text m-0'>{$product['count']}</p>
@@ -141,14 +139,29 @@ $this->title = 'Корзина';
     }
 
     echo "</div>";
+    echo "<br><h4 class='text-danger'><b>К оплате:</b> {$all_price} руб</h4>";
 
     ?>
 
     <?php
         if ($products) {
-            echo '<br><button type="button" class="btn btn-outline-secondary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Оформить заказ</button>';
+            echo "
+            <div class='site-login'>
+                <br><br><h4>Для оформление заказа введите пароль:</h4><br>
+                <div class='row'>
+                    <div class='col-lg-5'>
+                        <input id='password' type='text' class='form-control' placeholder='пароль...'  aria-describedby='basic-addon1'>
+                    </div>
+                    <br><div class='form-group'>
+                        <div>
+                            <br><button onclick='create_order()' type='button' class='btn btn-outline-secondary mt-3' data-bs-toggle='modal' data-bs-target='#exampleModal'>Оформить заказ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>";
         } else {
-            echo "<p class='mt-3'>В корзине ничего нет</p>";
+            echo "<p class='mt-3'>Корзина пуста</p>";
         }
     ?>
 

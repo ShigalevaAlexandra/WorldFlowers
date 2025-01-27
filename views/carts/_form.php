@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'product_id')->textInput() ?>
 
     <?= $form->field($model, 'count')->textInput() ?>
-
+    
     <?= $form->field($model, 'order_id')->textInput() ?>
 
     <div class="form-group">

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id_order',
             'status',
-            ' reason_cancellation:ntext',
+            'reason_cancellation:ntext',
             'created_time',
         ],
     ]) ?>

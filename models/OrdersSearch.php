@@ -18,7 +18,7 @@ class OrdersSearch extends Orders
     {
         return [
             [['id_order'], 'integer'],
-            [['status', ' reason_cancellation', 'created_time'], 'safe'],
+            [['status', 'reason_cancellation', 'created_time'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class OrdersSearch extends Orders
         ]);
 
         $query->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', ' reason_cancellation', $this-> reason_cancellation]);
+            ->andFilterWhere(['like', 'reason_cancellation', $this->reason_cancellation]);
 
         return $dataProvider;
     }

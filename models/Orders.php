@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use \yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -10,12 +9,10 @@ use Yii;
  *
  * @property int $id_order
  * @property string $status
- * @property string|null $ reason_cancellation
+ * @property string|null $reason_cancellation
  * @property string $created_time
- *
- * @property Carts[] $carts
  */
-class Orders extends ActiveRecord
+class Orders extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -31,7 +28,7 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
-            [['status', ' reason_cancellation'], 'string'],
+            [['status', 'reason_cancellation'], 'string'],
             [['created_time'], 'required'],
             [['created_time'], 'safe'],
         ];
@@ -45,18 +42,8 @@ class Orders extends ActiveRecord
         return [
             'id_order' => 'Id Order',
             'status' => 'Status',
-            ' reason_cancellation' => 'Reason Cancellation',
+            'reason_cancellation' => 'Reason Cancellation',
             'created_time' => 'Created Time',
         ];
-    }
-
-    /**
-     * Gets query for [[Carts]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCarts()
-    {
-        return $this->hasMany(Carts::class, ['order_id' => 'id_order']);
     }
 }

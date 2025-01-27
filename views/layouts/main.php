@@ -51,7 +51,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ['label' => 'Каталог', 'url' => ['/products/catalog']],
                 ['label' => 'Где нас найти', 'url' => ['/site/contact']],
                 ['label' => 'Корзина', 'url' => ['/carts/index']],
-                ['label' => 'Заказы', 'url' => ['/order/index']],
+                ['label' => 'Заказы', 'url' => ['/orders/index']],
            ]); 
 
         array_push($items, '<li class="nav-item">'

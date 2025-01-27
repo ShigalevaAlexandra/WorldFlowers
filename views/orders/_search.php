@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status') ?>
 
-    <?= $form->field($model, ' reason_cancellation') ?>
+    <?= $form->field($model, 'reason_cancellation') ?>
 
     <?= $form->field($model, 'created_time') ?>
 

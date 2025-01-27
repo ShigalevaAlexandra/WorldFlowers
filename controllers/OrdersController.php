@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Orders;
+use app\models\Carts;
+use app\models\Users;
 use app\models\OrdersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -68,20 +70,49 @@ class OrdersController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Orders();
+        $password = Yii::$app->request->post('password');
+        $model = Users::find()->where(['id_user' => Yii::$app->user->identity->id])
+        ->andWhere(['password' => $password])->one();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_order' => $model->id_order]);
+        if($model) {
+            $cart = Carts::find()->where(['user_id' => Yii::$app->user->identity->id])
+            ->andWhere(['order_id' => null]);
+    
+            if (!$cart) {
+                return json_encode(['success' => false, 'message' => 'Корзина пуста']);
+            } else {
+                $model = new Orders();
+    
+                if ($model->save(false)) {
+                    Yii::$app->db->createCommand()->update('carts', ['order_id'=>$model->id_order], "`user_id` = ".Yii::$app->user->identity->id." AND `order_id` = 0;")->execute();
+                    
+                    return json_encode(['success' => true, 'message' => 'Заказ успешно оформлен']);
+                } else {
+                    return json_encode(['success' => false, 'message' => 'Не удалось оформить заказ']);
+                }
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        else {
+            return json_encode(['success' => false, 'message' => 'Не удалось оформить заказ']);
+        }
     }
+
+    public function actionRemove()
+    {
+        $order_id = Yii::$app->request->post('select_id');
+
+        $model = Orders::findOne(['id_order' => $order_id]);
+    
+        if ($model) {
+            $model->delete();
+            
+            return json_encode(['success' => true, 'message' => 'Заказ удален']);
+            } else {
+                return json_encode(['success' => false, 'message' => 'Не удалось удалить заказ']);
+           }
+    } 
+    
+
 
     /**
      * Updates an existing Orders model.
@@ -135,9 +166,13 @@ class OrdersController extends Controller
 
     public function beforeAction($action)
     {
-        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+        if (Yii::$app->user->isGuest) {
             $this->redirect(['site/login']);
             return false;
-        } else return true;
+        } else
+            return true;
+            
+        if ($action->id=='create') $this->enableCsrfValidation=false;
+            return parent::beforeAction($action); 
     }
 }
