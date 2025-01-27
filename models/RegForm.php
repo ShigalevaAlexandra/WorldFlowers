@@ -41,7 +41,7 @@ class RegForm extends Users
             'surname' => 'Фамилия',
             'patronymic' => 'Отчество',
             'login' => 'Логин',
-            'email' => 'email',
+            'email' => 'Email',
             'password' => 'Пароль',
             'is_admin' => 'Права администратора',
             'confirm_password' => 'Повторите пароль',

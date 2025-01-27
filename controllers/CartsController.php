@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Carts;
 use app\models\CartsSearch;
+use app\models\Products;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,19 +69,70 @@ class CartsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Carts();
+        $product_id = Yii::$app->request->post('product_id');
+        $items = Yii::$app->request->post('count');
+        $product = Products::findOne($product_id);
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_cart' => $model->id_cart]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if (!$product || $product->count <= 0) {
+            return json_encode(['success' => false, 'message' => 'Товар недоступен']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        $product->count -= $items;
+        $product->save(false);
+
+        $model = Carts::find()->where(['user_id' => Yii::$app->user->identity->id])
+        ->andWhere(['product_id' => $product_id])->one();
+
+        if ($model) {
+            $model->count += $items;
+            $model->save(false);
+            return json_encode(['success' => true, 'message' => 'Товар добавлен в корзину']);
+        }
+
+        $model = new Carts();
+        $model->user_id = Yii::$app->user->identity->id;
+        $model->product_id = $product->id_product;
+        $model->count = $items;
+
+        if ($model->save(false)) {
+            return json_encode(['success' => true, 'message' => 'Товар добавлен в корзину']);
+        }
+
+        return json_encode(['success' => false, 'message' => 'Не удалось добавить товар в корзину']);
+    }
+
+    public function actionRemove()
+    {
+        $product_id = Yii::$app->request->post('select_id');
+        $product = Products::findOne($product_id);
+    
+        if (!$product) {
+            return json_encode(['success' => false, 'message' => 'Товар не найден']);
+        }    
+
+        $model = Carts::find()->where(['user_id' => Yii::$app->user->identity->id])
+        ->andWhere(['product_id' => $product_id])->one();
+    
+        if ($model) {
+            if ($model->count > 1) {
+                $model->count -= 1;
+                $model->save(false);
+            
+                $product->count += 1;
+                $product->save(false);
+            
+                return json_encode(['success' => true, 'message' => 'Товар успешно удален из корзины']);
+            } else {
+                $model->delete();
+            
+                $product->count += 1;
+                $product->save(false);
+            
+                return json_encode(['success' => true, 'message' => 'Товар успешно удален из корзины']);
+            }
+        }
+    
+        return json_encode(['success' => false, 'message' => 'Товар не найден в корзине']);
     }
 
     /**
@@ -135,9 +187,13 @@ class CartsController extends Controller
 
     public function beforeAction($action)
     {
-        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+        if (Yii::$app->user->isGuest) {
             $this->redirect(['site/login']);
             return false;
-        } else return true;
+        } else
+            return true;
+            
+        if ($action->id=='create') $this->enableCsrfValidation=false;
+            return parent::beforeAction($action); 
     }
 }

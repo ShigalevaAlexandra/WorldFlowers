@@ -50,7 +50,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ['label' => 'O нас', 'url' => ['/site/about']],
                 ['label' => 'Каталог', 'url' => ['/products/catalog']],
                 ['label' => 'Где нас найти', 'url' => ['/site/contact']],
-                ['label' => 'Корзина', 'url' => ['/cart/index']],
+                ['label' => 'Корзина', 'url' => ['/carts/index']],
                 ['label' => 'Заказы', 'url' => ['/order/index']],
            ]); 
 
@@ -94,6 +94,19 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
         </div>
     </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" arialabelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                </div> 
+            <div class="modal-body" id="modalBody"> 
+        </div> 
+        <div class="modal-footer"> 
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button> 
+        </div> 
+    </div> 
 </footer>
 
 <?php $this->endBody() ?>

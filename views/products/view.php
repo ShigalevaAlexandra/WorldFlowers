@@ -30,8 +30,36 @@ $this->title = $model->name;
                     <p class='text-secondary'><b>Категория:</b> {$categories->name}</p>
                     <p class='text-secondary'><b>Цвет:</b> {$model->color}</p>
                     <p class='text-secondary'><b>Кол-во:</b> {$model->count}</p>";
+                    echo (Yii::$app->user->isGuest ? "" : "<p onclick='add_product({$model->id_product}, 1)' class='btn btn-secondary mt-3'>Добавить в корзину</p>");
                 echo "</div>
             </div>";
         echo "</div>";
         ?>
 </div>
+<script>
+    function add_product(id, items){
+        let form=new FormData();
+        form.append('product_id', id);
+        form.append('count', items);
+
+        let request_options={method: 'POST', body: form};
+        fetch('https:///up-shigaleva.xn--80ahdri7a.site/carts/create', request_options)
+        .then(response=>response.text())
+        .then(result=>{
+            console.log(result)
+            let title=document.getElementById('staticBackdropLabel');
+            let body=document.getElementById('modalBody');
+            
+            if (result=='false'){
+                title.innerText='Ошибка';
+                body.innerHTML="<p>Ошибка добавления товара, вероятно, товар уже раскупили</p>"
+            } else {
+                title.innerText='В корзине новый товар';
+                body.innerHTML="<p>Товар успешно добавлен в корзину</p>"
+            }
+
+            let myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"), {});
+            myModal.show();
+        })
+    } 
+</script>

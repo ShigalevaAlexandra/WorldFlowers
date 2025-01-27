@@ -12,9 +12,7 @@ $this->title = 'Вход';
 
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>Пожалуйста, заполните следующие поля для входа:</p>
+    <br><br><h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
         <div class="col-lg-5">
@@ -33,7 +31,7 @@ $this->title = 'Вход';
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
-            <div class="form-group">
+            <br><div class="form-group">
                 <div>
                     <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>

@@ -28,7 +28,7 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'agree')->checkbox() ?> 
 
-    <div class="form-group">
+    <br><div class="form-group">
         <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-success']) ?>
     </div>
 

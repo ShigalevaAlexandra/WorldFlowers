@@ -114,10 +114,41 @@ $this->title = 'Каталог';
                     <h5 class='card-title'>{$product->name}</h5><br>
                     <p class='text-secondary'><b>{$product->price} руб</b></p><br>";
                     echo (Yii::$app->user->isGuest ? "<a href='/products/view?id_product={$product->id_product}' class='btn btn-outline-secondary'>Просмотр товара</a>" :
-                        "<a href='/products/view?id_product={$product->id_product}' class='btn btn-outline-secondary'>Просмотр товара</a>
-                        <p onclick='add_product({$product->id_product}, 1)' class='btn btn-secondary'>Добавить в корзину</p>");
-    echo "</div>
-</div>";
-  }
-}
-echo "</div>";
+                        "<br><div class='d-flex gap-4 align-items-center' style='margin-top:auto;'>
+                            <a href='/products/view?id_product={$product->id_product}' class='0 btn btn-outline-secondary'>Просмотр товара</a>
+                            <p onclick='add_product({$product->id_product}, 1)' class='btn btn-secondary mt-3'>Добавить в корзину</p>
+                        </div>");
+                echo "</div>
+            </div>";
+        }
+    }
+    echo "</div>";
+?>
+
+<script>
+    function add_product(id, items){
+        let form=new FormData();
+        form.append('product_id', id);
+        form.append('count', items);
+
+        let request_options={method: 'POST', body: form};
+        fetch('https:///up-shigaleva.xn--80ahdri7a.site/carts/create', request_options)
+        .then(response=>response.text())
+        .then(result=>{
+            console.log(result)
+            let title=document.getElementById('staticBackdropLabel');
+            let body=document.getElementById('modalBody');
+            
+            if (result=='false'){
+                title.innerText='Ошибка';
+                body.innerHTML="<p>Ошибка добавления товара, вероятно, товар уже раскупили</p>"
+            } else {
+                title.innerText='В корзине новый товар';
+                body.innerHTML="<p>Товар успешно добавлен в корзину</p>"
+            }
+
+            let myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"), {});
+            myModal.show();
+        })
+    } 
+</script>
