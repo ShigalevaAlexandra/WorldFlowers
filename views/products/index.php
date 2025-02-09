@@ -15,10 +15,10 @@ $this->title = 'Каталог';
 ?>
 <div class="products-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <br><br><h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Products', ['create'], ['class' => 'btn btn-success']) ?>
+        <br><?= Html::a('Добавить продукт', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,19 +29,21 @@ $this->title = 'Каталог';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_product',
-            'photo',
+            //'id_product',
+            ['attribute' => 'Категория', 'value' => function($data) { return $data -> getCategory() -> One() -> name; }],
             'name',
-            'price',
+            ['attribute' => 'Фото', 'format' => 'html', 'value' => function($data) { return "<img src='web/{$data -> photo}' alt='photo' style='width:70px;'>";}],
+            'color',
             'country_origin',
+            'price',
             //'category_id',
-            //'color',
-            //'count',
+            'count',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Products $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id_product' => $model->id_product]);
-                 }
+                },
+                'template' => '{update} {delete}'
             ],
         ],
     ]); ?>

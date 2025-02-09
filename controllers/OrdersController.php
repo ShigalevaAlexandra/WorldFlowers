@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Orders;
 use app\models\Carts;
 use app\models\Users;
+use app\models\Products;
 use app\models\OrdersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -100,16 +101,25 @@ class OrdersController extends Controller
     public function actionRemove()
     {
         $order_id = Yii::$app->request->post('select_id');
+        $count_prod = Yii::$app->request->post('count_prod');
+        $cart_prod = Yii::$app->request->post('cart_prod');
 
         $model = Orders::findOne(['id_order' => $order_id]);
     
         if ($model) {
-            $model->delete();
+
+            $cart = Carts::find()->where(['product_id' => $cart_prod])
+            ->andWhere(['order_id' => $order_id])->one();
+
+            if($cart) {
+                $cart->order_id = 0;
+                $cart->save(false);
+            }
             
             return json_encode(['success' => true, 'message' => 'Заказ удален']);
-            } else {
+        } else {
                 return json_encode(['success' => false, 'message' => 'Не удалось удалить заказ']);
-           }
+        }
     } 
     
 
@@ -174,5 +184,16 @@ class OrdersController extends Controller
             
         if ($action->id=='create') $this->enableCsrfValidation=false;
             return parent::beforeAction($action); 
+    }
+
+    public function actionPersonal()
+    {
+        $searchModel = new OrdersSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('personal', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

@@ -40,8 +40,8 @@ class Categories extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_category' => 'Id Category',
-            'name' => 'Name',
+            'id_category' => 'ID',
+            'name' => 'Наименование',
         ];
     }
 

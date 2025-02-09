@@ -108,7 +108,7 @@ $this->title = 'Каталог';
     foreach ($products as $product) {
         if ($product->count > 0) {
             echo "<div class='card m-1' style='width: 22%; min-width: 390px;'>
-            <a href='/product/view?id_product={$product->id_product}'><img src='https://up-shigaleva.xn--80ahdri7a.site/web/{$product->photo}' class='card-img-top'
+            <a href='/products/view?id_product={$product->id_product}'><img src='https://up-shigaleva.xn--80ahdri7a.site/web/{$product->photo}' class='card-img-top'
             style='max-height: 500px;' alt='image'></a>
                 <div class='card-body'>
                     <h5 class='card-title'>{$product->name}</h5><br>

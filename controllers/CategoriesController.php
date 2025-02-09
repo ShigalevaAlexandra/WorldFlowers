@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Categories;
 use app\models\CategoriesSearch;
 use yii\web\Controller;
@@ -130,5 +131,13 @@ class CategoriesController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function beforeAction($action)
+    {
+        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+            $this->redirect(['site/login']);
+            return false;
+        } else return true;
     }
 }

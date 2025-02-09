@@ -112,14 +112,23 @@ class ProductsController extends Controller
     {
         $model = $this->findModel($id_product);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost) {
+
+            $model->load($this->request->post());
+            $model->photo=UploadedFile::getInstance($model,'photo');
+            $file_name='productsImages/' . \Yii::$app->getSecurity()->generateRandomString(50). '.' . $model->photo->extension;
+            $model->photo->saveAs(\Yii::$app->basePath .'/web/'. $file_name);
+            $model->photo=$file_name;
+            $model->save(false);
+            
             return $this->redirect(['view', 'id_product' => $model->id_product]);
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    } 
+
 
     /**
      * Deletes an existing Products model.

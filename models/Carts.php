@@ -51,7 +51,7 @@ class Carts extends ActiveRecord
             'user_id' => 'User ID',
             'product_id' => 'Product ID',
             'count' => 'Count',
-            'order_id' => 'Order ID'
+            'order_id' => 'Номер'
         ];
     }
 

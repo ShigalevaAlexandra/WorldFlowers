@@ -94,8 +94,7 @@ $this->title = 'Корзина';
                     title.innerText = 'Ошибка формирования заказа';
                     body.innerHTML = "<p>Пароль введен неверно</p>"
                 } else {
-                    title.innerText = 'Заказ оформлен';
-                    body.innerHTML = "<p>Товары из корзины перемещены в заказ</p>"
+                    location.href='https://up-shigaleva.xn--80ahdri7a.site/orders/personal'
                 }
 
                 let myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"), {});
@@ -115,13 +114,13 @@ $this->title = 'Корзина';
             array_push($products, $cart_prod);
         }
 
-        echo "<br><div class='d-flex flex-row flex-wrap justify-content-start align-itemsend'>";
+        echo "<br><div name='list_product' class='d-flex flex-row flex-wrap justify-content-start align-itemsend'>";
 
         $all_price = 0;
 
         foreach ($products as $product) {
             echo "<div class='card m-1' style='width: 22%; min-width: 390px;'>
-                <a href='/product/view?id_product={$product['id_product']}' style='height: 300px; width: 388px; background-position: center; background-size: cover; background-repeat: no-repeat; background-image: url(https://up-shigaleva.xn--80ahdri7a.site/web/{$product['photo']})'></a>
+                <a href='/products/view?id_product={$product['id_product']}' style='height: 300px; width: 388px; background-position: center; background-size: cover; background-repeat: no-repeat; background-image: url(https://up-shigaleva.xn--80ahdri7a.site/web/{$product['photo']})'></a>
                 <div class='card-body'>
                 <h5 class='card-title'>{$product['name']}</h5>";
 
@@ -150,7 +149,7 @@ $this->title = 'Корзина';
                 <br><br><h4>Для оформление заказа введите пароль:</h4><br>
                 <div class='row'>
                     <div class='col-lg-5'>
-                        <input id='password' type='text' class='form-control' placeholder='пароль...'  aria-describedby='basic-addon1'>
+                        <input id='password' type='password' class='form-control' placeholder='пароль...'  aria-describedby='basic-addon1'>
                     </div>
                     <br><div class='form-group'>
                         <div>

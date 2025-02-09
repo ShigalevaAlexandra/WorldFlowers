@@ -80,7 +80,7 @@ class UsersController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_user' => $model->id_user]);
+                return $this->redirect(['site/login']);
             }
         } else {
             $model->loadDefaultValues();
@@ -139,5 +139,13 @@ class UsersController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function beforeAction($action)
+    {
+        if ((Yii::$app->user->isGuest) || (Yii::$app->user->identity->is_admin==0)){
+            $this->redirect(['site/login']);
+            return false;
+        } else return true;
     }
 }

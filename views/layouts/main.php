@@ -43,15 +43,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     else {
         Yii::$app->user->identity->is_admin==1 ?
             ($items=[
-                ['label' => 'Панель администратора', 'url' => ['/admin/index']],
+                ['label' => 'Панель администратора', 'url' => ['/admin']],
             ])
             :
             ($items=[
                 ['label' => 'O нас', 'url' => ['/site/about']],
                 ['label' => 'Каталог', 'url' => ['/products/catalog']],
                 ['label' => 'Где нас найти', 'url' => ['/site/contact']],
-                ['label' => 'Корзина', 'url' => ['/carts/index']],
-                ['label' => 'Заказы', 'url' => ['/orders/index']],
+                ['label' => 'Корзина', 'url' => ['/carts']],
+                ['label' => 'Заказы', 'url' => ['/orders/personal']],
            ]); 
 
         array_push($items, '<li class="nav-item">'

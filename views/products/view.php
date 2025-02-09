@@ -21,7 +21,7 @@ $this->title = $model->name;
         echo "<div class='d-flex flex-row flex-wrap justify-content-center border-info align-itemsend'>";
     
             echo "<div class='card m-1' style='width: 22%; min-width: 390px;'>
-                <a href='/product/view?id_product={$model->id_product}'><img src='https://up-shigaleva.xn--80ahdri7a.site/web/{$model->photo}' class='card-img-top'
+                <a href='/products/view?id_product={$model->id_product}'><img src='https://up-shigaleva.xn--80ahdri7a.site/web/{$model->photo}' class='card-img-top'
                 style='max-height: 500px;' alt='image'></a>
                 <div class='card-body'>
                     <h5 class='card-title'>{$model->name}</h5><br>
@@ -50,9 +50,10 @@ $this->title = $model->name;
             let title=document.getElementById('staticBackdropLabel');
             let body=document.getElementById('modalBody');
             
-            if (result=='false'){
+            if (result.includes('false')){
                 title.innerText='Ошибка';
-                body.innerHTML="<p>Ошибка добавления товара, вероятно, товар уже раскупили</p>"
+                body.innerHTML="<p>Вероятно, товар уже раскупили</p>"
+
             } else {
                 title.innerText='В корзине новый товар';
                 body.innerHTML="<p>Товар успешно добавлен в корзину</p>"
